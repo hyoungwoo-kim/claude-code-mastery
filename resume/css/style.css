@@ -395,13 +395,21 @@ img { max-width: 100%; display: block; }
 .avatar-inner {
   width: 220px; height: 220px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--bg-700), var(--bg-600));
   border: 3px solid rgba(232, 71, 42, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 5.5rem;
-  color: var(--accent);
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(232, 71, 42, 0.2);
+}
+
+.avatar-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.5s ease;
+}
+
+.avatar-ring:hover .avatar-photo {
+  transform: scale(1.06);
 }
 
 /* 플로팅 뱃지 */
