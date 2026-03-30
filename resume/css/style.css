@@ -394,15 +394,18 @@ img { max-width: 100%; display: block; }
 
 .avatar-inner {
   width: 220px; height: 220px;
+  min-width: 220px;      /* flex 환경에서 줄어드는 것 방지 */
   border-radius: 50%;
   border: 3px solid rgba(232, 71, 42, 0.4);
   overflow: hidden;
   box-shadow: 0 0 40px rgba(232, 71, 42, 0.2);
+  flex-shrink: 0;
 }
 
 .avatar-photo {
-  width: 100%;
-  height: 100%;
+  display: block;        /* 인라인 여백 제거 */
+  width: 220px;          /* 컨테이너와 동일한 명시적 크기 */
+  height: 220px;
   object-fit: cover;
   object-position: center top;
   transition: transform 0.5s ease;
@@ -968,7 +971,8 @@ footer p {
 @media (max-width: 1024px) {
   .hero-visual { flex: 0 0 300px; height: 300px; }
   .avatar-ring { width: 240px; height: 240px; }
-  .avatar-inner { width: 190px; height: 190px; font-size: 4.5rem; }
+  .avatar-inner { width: 190px; height: 190px; min-width: 190px; }
+  .avatar-photo { width: 190px; height: 190px; }
   .about-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
 }
 
@@ -985,7 +989,8 @@ footer p {
 
   .hero-visual { flex: none; width: 260px; height: 260px; }
   .avatar-ring { width: 220px; height: 220px; }
-  .avatar-inner { width: 170px; height: 170px; font-size: 3.8rem; }
+  .avatar-inner { width: 170px; height: 170px; min-width: 170px; }
+  .avatar-photo { width: 170px; height: 170px; }
 
   .project-row,
   .project-row.reverse { grid-template-columns: 1fr; direction: ltr; }
