@@ -1,115 +1,122 @@
-// ===========================
-// HEADER SCROLL EFFECT
-// ===========================
+// ==========================================
+// 헤더 스크롤 효과
+// ==========================================
 const header = document.getElementById('header');
+
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 50) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
+  header.classList.toggle('scrolled', window.scrollY > 50);
 });
 
-// ===========================
-// MOBILE HAMBURGER MENU
-// ===========================
+// ==========================================
+// 모바일 햄버거 메뉴
+// ==========================================
 const hamburger = document.getElementById('hamburger');
-const navbar = document.getElementById('navbar');
+const navbar    = document.getElementById('navbar');
 
 hamburger.addEventListener('click', () => {
   navbar.classList.toggle('open');
 });
 
-// Close menu when nav link clicked
+// 메뉴 항목 클릭 시 닫기
 document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    navbar.classList.remove('open');
-  });
+  link.addEventListener('click', () => navbar.classList.remove('open'));
 });
 
-// ===========================
-// ACTIVE NAV LINK ON SCROLL
-// ===========================
+// ==========================================
+// 활성 네비게이션 링크 (스크롤 위치 기반)
+// ==========================================
 const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
+const navLinks  = document.querySelectorAll('.nav-link');
 
-const observerNav = new IntersectionObserver((entries) => {
+const navObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      navLinks.forEach(link => link.classList.remove('active'));
-      const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
-      if (active) active.classList.add('active');
-    }
+    if (!entry.isIntersecting) return;
+    navLinks.forEach(l => l.classList.remove('active'));
+    const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+    if (active) active.classList.add('active');
   });
 }, { threshold: 0.4 });
 
-sections.forEach(sec => observerNav.observe(sec));
+sections.forEach(s => navObserver.observe(s));
 
-// ===========================
-// SCROLL REVEAL ANIMATION
-// ===========================
-const revealElements = document.querySelectorAll(
-  '.about-inner, .service-item, .skill-card, .project-card, .timeline-item, .contact-inner, .section-title'
+// ==========================================
+// 스크롤 리빌 애니메이션
+// ==========================================
+const revealTargets = document.querySelectorAll(
+  '.glass-card, .skill-card, .project-row, .section-title, .section-label, .about-tags, .hero-stats'
 );
 
-revealElements.forEach(el => el.classList.add('reveal'));
+revealTargets.forEach(el => el.classList.add('reveal'));
 
-const revealObserver = new IntersectionObserver((entries) => {
+const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
-    }
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('visible');
+    revealObserver.unobserve(entry.target);
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-revealElements.forEach(el => revealObserver.observe(el));
+revealTargets.forEach(el => revealObserver.observe(el));
 
-// ===========================
-// SKILL BAR ANIMATION
-// ===========================
-const fills = document.querySelectorAll('.fill');
-const barObserver = new IntersectionObserver((entries) => {
+// ==========================================
+// 스킬 바 애니메이션 (CSS 변수 방식)
+// ==========================================
+const skillFills = document.querySelectorAll('.skill-fill');
+
+const barObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const target = entry.target;
-      const width = target.style.width;
-      target.style.width = '0';
-      setTimeout(() => { target.style.width = width; }, 100);
-      barObserver.unobserve(target);
-    }
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const targetWidth = el.style.getPropertyValue('--w');
+    // 초기에 0으로 설정 후 width 트랜지션
+    el.style.width = '0';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.style.width = targetWidth;
+      });
+    });
+    barObserver.unobserve(el);
   });
 }, { threshold: 0.5 });
 
-fills.forEach(fill => barObserver.observe(fill));
-
-// ===========================
-// CONTACT FORM
-// ===========================
-const form = document.querySelector('.contact-form');
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const btn = form.querySelector('button[type="submit"]');
-  btn.textContent = '전송 완료!';
-  btn.style.background = '#28a745';
-  btn.style.borderColor = '#28a745';
-  setTimeout(() => {
-    btn.textContent = '메시지 보내기';
-    btn.style.background = '';
-    btn.style.borderColor = '';
-    form.reset();
-  }, 3000);
+skillFills.forEach(el => {
+  el.style.width = '0'; // 초기값 고정
+  barObserver.observe(el);
 });
 
-// ===========================
-// SMOOTH SCROLL (anchor)
-// ===========================
+// ==========================================
+// 문의 폼 제출 처리
+// ==========================================
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = contactForm.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+
+    btn.innerHTML = '<i class="fas fa-check"></i> 전송 완료!';
+    btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+    btn.style.boxShadow  = '0 4px 16px rgba(34,197,94,0.35)';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerHTML  = original;
+      btn.style.background = '';
+      btn.style.boxShadow  = '';
+      btn.disabled = false;
+      contactForm.reset();
+    }, 3000);
+  });
+}
+
+// ==========================================
+// 부드러운 스크롤 (앵커 링크)
+// ==========================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
+  anchor.addEventListener('click', function(e) {
     const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
