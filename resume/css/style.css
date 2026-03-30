@@ -497,6 +497,19 @@ img { max-width: 100%; }
   text-align: center;
 }
 
+.skill-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.08));
+  transition: transform 0.3s;
+}
+
+.skill-card:hover .skill-img {
+  transform: scale(1.15);
+}
+
 .skill-card span {
   font-family: var(--font-en);
   font-weight: 600;
