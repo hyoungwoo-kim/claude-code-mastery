@@ -60,6 +60,13 @@ claude-code-mastery/
 2. KODATA SOHO시스템 구축 — Python, MariaDB, 데이터 분석
 3. 아파트테크 세무서비스 구축 — React, PostgreSQL, 핀테크
 
+## 언어 및 커뮤니케이션 규칙
+- **기본 응답 언어**: 한국어
+- **코드 주석**: 한국어로 작성
+- **커밋 메시지**: 한국어로 작성
+- **문서화**: 한국어로 작성
+- **변수명/함수명**: 영어 (코드 표준 준수)
+
 ## 작업 규칙
 - 파일 수정 후 반드시 `git add → git commit → git push origin main` 수행
 - 커밋 메시지는 한글로 작성
