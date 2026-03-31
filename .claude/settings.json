@@ -22,29 +22,5 @@
       "Bash(rm -rf /)",
       "Bash(git push --force *)"
     ]
-  },
-
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|NotebookEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[$(date '+%Y-%m-%d %H:%M:%S')] 파일 수정됨\" >> C:/Users/bigit/.claude/file-history/edit-log.txt"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"[$(date '+%Y-%m-%d %H:%M:%S')] Claude 작업 완료\" >> C:/Users/bigit/.claude/file-history/session-log.txt"
-          }
-        ]
-      }
-    ]
   }
 }
